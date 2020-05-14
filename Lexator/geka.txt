@@ -1,0 +1,5 @@
+fn main ( )
+{
+	let i : int = 2345 + 4 ;
+	let vika : float = 23.5 * 0.5 ;
+}

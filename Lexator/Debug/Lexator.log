@@ -1,0 +1,3 @@
+﻿  Lexator.cpp
+C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp(186,20): warning C4018: <: несоответствие типов со знаком и без знака
+  Lexator.vcxproj -> C:\Users\User\source\repos\Lexator\Debug\Lexator.exe
