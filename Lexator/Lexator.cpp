@@ -46,7 +46,12 @@ public:
 		semicolon,
 		constInt,
 		constFloat,
-		let
+		let,
+		equalEqual,
+		equalBig,
+		equalLit,
+		Bigger,
+		Litter
 	};
 	enum errorID
 	{
@@ -58,7 +63,11 @@ public:
 	string fileNameOpen;
 	string fileNameSave;
 };
-
+void
+lexator()
+{
+	;
+}
 Lexator::Lexator( string fileNameOpen,  string fileNameSave)
 {
 	this->fileNameOpen = fileNameOpen;
@@ -90,6 +99,11 @@ Lexator::Lexator( string fileNameOpen,  string fileNameSave)
 			if (currentLexem.compare("(") == 0)
 			{
 				TabLexem(leftBracket, "(");
+				continue;
+			}
+			if (currentLexem.compare("while") == 0)
+			{
+				TabLexem(whileFn, "While");
 				continue;
 			}
 			if (currentLexem.compare(")") == 0)
@@ -149,10 +163,47 @@ Lexator::Lexator( string fileNameOpen,  string fileNameSave)
 			}
 			if (currentLexem.compare("=") == 0)
 			{
-				TabLexem(equal, "Равно");
+				TabLexem(equal, "Присвоить");
 				continue;
 				
 			}
+			if (currentLexem.compare("==") == 0)
+			{
+				TabLexem(equalEqual, "Равно");
+				continue;
+
+			}
+			if (currentLexem.compare("==") == 0)
+			{
+				TabLexem(equalEqual, "Равно");
+				continue;
+
+			}
+			if (currentLexem.compare("<=") == 0)
+			{
+				TabLexem(equalLit, "Меньше равно");
+				continue;
+
+			}
+			if (currentLexem.compare(">=") == 0)
+			{
+				TabLexem(equalBig, "Больше равно");
+				continue;
+
+			}
+			if (currentLexem.compare(">") == 0)
+			{
+				TabLexem(Bigger, "Больше");
+				continue;
+
+			}
+			if (currentLexem.compare("<") == 0)
+			{
+				TabLexem(Litter, "Меньше");
+				continue;
+
+			}
+
 			if (isdigit(currentLexem[0]))
 			{
 				IsDigit();
@@ -181,6 +232,7 @@ void Lexator::UpdateLine()
 	}
 	if (in.peek() == '\n')
 	{
+		cout <<"nnnn " <<currentLexem << endl;
 		updateLine = true;
 	}
 }
