@@ -299,7 +299,7 @@ bool Lexator::CheckE6()
 		{
 			string word = string(buffer.ReturnBuffer());
 			if (CheckReservedWords())
-				TabLexem(currentReservedWord, " Служебное слово : " + word);
+				TabLexem(currentReservedWord-1, " Служебное слово : " + word);
 			else
 				TabLexem(id, " Идентификатор : " + word);
 
