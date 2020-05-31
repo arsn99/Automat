@@ -1,32 +1,23 @@
-﻿// Lexator.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <cctype>   // для функции isdigit
 #include <cstdlib>  // для функции atoi
+#include "Buffer.h" 
 using namespace std;
 
+const int NUM_OF_WORDS = 1;
+const int NUM_OF_WORDS_E1 = 3;
 class Lexator
 {
 public:
 
 	Lexator(  string fileNameOpen,  string fileNameSave);
 	~Lexator();
-	int OpenFile(string fileNameOpen, string fileNameSave);
-	void TabLexem(int number, string str);
-	void ErrorFun(string str);
-	void UpdateLine();
-	void IsDigit();
-	void CloseFile();
-	bool updateLine;
-	ofstream out;
-	ifstream in;
-	string currentLexem;
 	enum ID 
 	{
-		fn,
 		whileFn,
 		leftBrace,	//	{
 		rightBrace, //	}
@@ -59,236 +50,371 @@ public:
 		notOpenFile
 
 	};
+	
+
 	int lineNumber;
-	string fileNameOpen;
-	string fileNameSave;
+	void CloseFile();
+	bool updateLine;
+	ofstream out;
+	ifstream in;
+	void StateMachine();
+	string fileNameOpen, fileNameSave;
+	int OpenFile();
+	enum State
+	{
+		H,
+		Id,
+		Word,
+		Number,
+		E5,
+		E6,
+		E7
+	};
+	State currentState;
+	char currentLex;
+	Buffer buffer;
+	char stateE1[NUM_OF_WORDS_E1] = { ' ','\r','\t' };
+	char keywords[NUM_OF_WORDS][10] = {"while"};
+	bool CheckTabulation();
+	bool CheckOperatorE1();
+	bool CheckE1();
+	bool CheckE6();
+	void TabLexem(int number, string str);
+	void ErrorFun(string str);
+	void ErrorFun(string str, char lex);
+	void UpdateLine();
+	bool CheckWord();
+	bool IsLetter();
+	bool CheckReservedWords();
+	int currentReservedWord;
+	bool CheckOperatorE1_2();
+	bool CheckNumber();
+
 };
-void
-lexator()
-{
-	;
-}
+
 Lexator::Lexator( string fileNameOpen,  string fileNameSave)
 {
 	this->fileNameOpen = fileNameOpen;
 	this->fileNameSave = fileNameSave;
-
 	updateLine = false;
-	if (OpenFile(fileNameOpen, fileNameSave) == openFile)
+	if (OpenFile() == openFile)
 	{
-		while (!in.eof())
-		{
-			in >> currentLexem;
-			UpdateLine();
-			if (currentLexem.compare("fn")==0)
-			{
-				TabLexem(fn, "Ключевое слово");
-				continue;
-			}
-
-			if (currentLexem.compare("{") == 0)
-			{
-				TabLexem(leftBrace, "{");
-				continue;
-			}
-			if (currentLexem.compare("}") == 0)
-			{
-				TabLexem(rightBrace, "}");
-				continue;
-			}
-			if (currentLexem.compare("(") == 0)
-			{
-				TabLexem(leftBracket, "(");
-				continue;
-			}
-			if (currentLexem.compare("while") == 0)
-			{
-				TabLexem(whileFn, "While");
-				continue;
-			}
-			if (currentLexem.compare(")") == 0)
-			{
-				TabLexem(rightBracket, ")");
-				continue;
-			}
-			if (currentLexem.compare(";") == 0)
-			{
-				TabLexem(semicolon, ";");
-				continue;
-			}
-			if (currentLexem.compare("let") == 0)
-			{
-				TabLexem(let, "Ключевое слово");
-				continue;
-			}
-			if (currentLexem.compare("int") == 0)
-			{
-				TabLexem(typeInt, "Тип данных int");
-				continue;
-			}
-			if (currentLexem.compare("float") == 0)
-			{
-				TabLexem(typeFloat, "Тип данных float");
-				continue;
-			}
-			if (currentLexem.compare(":") == 0)
-			{
-				TabLexem(colon, ":");
-				continue;
-			}
-			if (currentLexem.compare("*") == 0)
-			{
-				TabLexem(multiply, "*");
-				continue;
-			}
-			if (currentLexem.compare("/") == 0)
-			{
-				TabLexem(divide, "/");
-				continue;
-			}
-			if (currentLexem.compare("+") == 0)
-			{
-				TabLexem(plus, "+");
-				continue;
-			}
-			if (currentLexem.compare("-") == 0)
-			{
-				TabLexem(minus, "-");
-				continue;
-			}
-			if (currentLexem.compare("%") == 0)
-			{
-				TabLexem(moduloDivision, "%");
-				continue;
-			}
-			if (currentLexem.compare("=") == 0)
-			{
-				TabLexem(equal, "Присвоить");
-				continue;
-				
-			}
-			if (currentLexem.compare("==") == 0)
-			{
-				TabLexem(equalEqual, "Равно");
-				continue;
-
-			}
-			if (currentLexem.compare("==") == 0)
-			{
-				TabLexem(equalEqual, "Равно");
-				continue;
-
-			}
-			if (currentLexem.compare("<=") == 0)
-			{
-				TabLexem(equalLit, "Меньше равно");
-				continue;
-
-			}
-			if (currentLexem.compare(">=") == 0)
-			{
-				TabLexem(equalBig, "Больше равно");
-				continue;
-
-			}
-			if (currentLexem.compare(">") == 0)
-			{
-				TabLexem(Bigger, "Больше");
-				continue;
-
-			}
-			if (currentLexem.compare("<") == 0)
-			{
-				TabLexem(Litter, "Меньше");
-				continue;
-
-			}
-
-			if (isdigit(currentLexem[0]))
-			{
-				IsDigit();
-				continue;;
-			}
-			else
-			{
-				TabLexem(id, "Идентификатор : "+currentLexem);
-			}
-			
-		}
+		StateMachine();
 	}
 	else
 		cout << "Неудалось открыть файл" << endl;
+}
+bool Lexator::CheckWord()
+{
+	if (buffer.CountForBuffer() == 0 && IsLetter())
+	{
+		buffer.Add(currentLex);
+		return 1;
+	}
+
+	if ((IsLetter() || isdigit(currentLex))&& buffer.CountForBuffer() > 0)
+	{
+		buffer.Add(currentLex);
+		return 1;
+	}
+	
+	return 0;
+}
+/// <summary>
+/// Проверяет является ли данный символ буквой.
+/// </summary>
+bool Lexator::IsLetter()
+{
+	if ((currentLex >= 'a' && currentLex <= 'z') || (currentLex >= 'A' && currentLex <= 'Z'))
+	{
+		return 1;
+	}
+	else
+		return 0;
+}
+/// <summary>
+/// Проверяет является ли данный символ табуляцией
+/// </summary>
+bool Lexator::CheckTabulation()
+{
+	if (currentLex == '\n')
+	{
+		UpdateLine();
+		return 1;
+	}
+
+	for (int i = 0; i < NUM_OF_WORDS_E1; i++)
+	{
+		if (currentLex == stateE1[i])
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+/// <summary>
+/// Проверяет является ли данный символ оператором, если является то заносится в таблицу
+/// </summary>
+bool Lexator::CheckOperatorE1()
+{
+	switch (currentLex)
+	{
+	case ';':
+		TabLexem(semicolon, " ; ");
+		return 1;
+
+	case '*':
+		TabLexem(multiply, " * ");
+		return 1;
+
+	case '+':
+		TabLexem(plus, " + ");
+		return 1;
+
+	case '>':
+		TabLexem(Bigger, " > ");
+		return 1;
+
+	case '%':
+		TabLexem(moduloDivision, " % ");
+		return 1;
+
+	case ')':
+		TabLexem(rightBrace, " ) ");
+		return 1;
+
+	case '(':
+		TabLexem(leftBrace, " ( ");
+		return 1;
+
+	case '{':
+		TabLexem(leftBracket, " { ");
+		return 1;
+
+	case '}':
+		TabLexem(rightBracket, " } ");
+		return 1;
+
+	case '=':
+		TabLexem(equal, " = ");
+		return 1;
+	default:
+		return false;
+		break;
+	}
+}
+/// <summary>
+/// Проверяет является ли данный символ табуляцией
+/// </summary>
+bool Lexator::CheckOperatorE1_2()
+{
+	switch (currentLex)
+	{
+	case ';':
+		return 1;
+
+	case '*':
+		return 1;
+
+	case '+':
+		return 1;
+
+	case '>':
+		return 1;
+
+	case '%':
+		return 1;
+
+	case ')':
+		return 1;
+
+	case '(':
+		return 1;
+
+	case '{':
+		return 1;
+
+	case '}':
+		return 1;
+
+	case '=':
+		return 1;
+	default:
+		return false;
+		break;
+	}
+}
+/// <summary>
+/// Проверяет является ли данное слово, которое содержится в буфере зарезервированым
+/// </summary>
+bool Lexator::CheckReservedWords()
+{
+	for ( currentReservedWord = 0; currentReservedWord < NUM_OF_WORDS; currentReservedWord++)
+	{
+		for (int currentLetter = 0; currentLetter < buffer.CountForBuffer(); currentLetter++)
+		{
+			if (keywords[currentReservedWord][currentLetter] != buffer[currentLetter])
+				return 0;	
+		}
+	}
+
+	return 1;
+}
+/// <summary>
+/// Вызываются функции, которые нужны в состоянии Н
+/// </summary>
+bool Lexator::CheckE1()
+{
+	cout << currentLex << endl;
+	if (CheckTabulation())
+		return 1;
+	
+	if (IsLetter())
+	{
+		buffer.ChangeCountForBuffer(0);
+		CheckWord();
+		currentState = Word;
+		return 1;
+	}
+	if (isdigit(currentLex))
+	{
+		buffer.ChangeCountForBuffer(0);	
+		buffer.Add(currentLex);
+		currentState = Number;
+		return 1;
+
+	}
+	if (CheckOperatorE1())
+		return 1;
+	return 0;
+}
+/// <summary>
+/// Функция для проверки слова.
+/// </summary>
+bool Lexator::CheckE6()
+{
+	if (CheckTabulation()|| CheckOperatorE1_2())
+	{
+		if (buffer.CountForBuffer()>0)
+		{
+			string word = string(buffer.ReturnBuffer());
+			if (CheckReservedWords())
+				TabLexem(currentReservedWord, " Служебное слово : " + word);
+			else
+				TabLexem(id, " Идентификатор : " + word);
+
+			buffer.ChangeCountForBuffer(0);
+			CheckOperatorE1();
+		}
+		currentState = H;
+		return 1;
+	}
+	if (CheckWord())
+		return 1;
+}
+/// <summary>
+/// Проверяет является ли текущий символ числом, если да то заносит в буфер.
+/// </summary>
+bool Lexator::CheckNumber()
+{
+	bool isFloat = false;
+	
+	while (!CheckTabulation()&&!CheckOperatorE1_2())
+	{
+		if (isdigit(currentLex))
+		{
+			buffer.Add(currentLex);
+		}
+		else
+			if (currentLex == '.')
+				if (!isFloat)
+				{
+					isFloat = true;
+					buffer.Add(currentLex);
+				}
+				else
+					return 0;
+			else
+				return 0;
+
+		in.get(currentLex);
+
+	}
+
+	if (isFloat)
+		TabLexem(typeFloat, " Числовая константа с плавающей запятой " + string(buffer.ReturnBuffer()));
+	else
+		TabLexem(typeInt, " Целочисленная константа " + string(buffer.ReturnBuffer()));
+
+	currentState = H;
+
+	if (CheckTabulation() || CheckOperatorE1())
+		return 1;
+	else
+		return 0;
+}
+/// <summary>
+/// Переход по состояниям
+/// </summary>
+void Lexator::StateMachine()
+{
+	currentState = H;
+	while (in.get(currentLex))
+	{
+		cout <<"while " <<currentLex << endl;
+		switch (currentState)
+		{
+			case H:
+				if (!CheckE1())
+					ErrorFun("Неправильный символ в состояние H: ", currentLex);
+				break;
+			case Word:
+				if(!CheckE6())
+					ErrorFun("Неправильный символ в состояние Word : ", currentLex);
+				break;
+			case Number:
+				if (!CheckNumber())
+					ErrorFun("Неправильный символ в состояние Number :  ", currentLex);
+				break;
+				
+			default:
+				break;
+		}
+
+	}
 }
 Lexator::~Lexator()
 {
 	CloseFile();
 }
+/// <summary>
+/// Обновление номера строки
+/// </summary>
 void Lexator::UpdateLine()
 {
-	if (updateLine)
-	{
 		lineNumber++;
-		updateLine = false;
-	}
-	if (in.peek() == '\n')
-	{
-		cout <<"nnnn " <<currentLexem << endl;
-		updateLine = true;
-	}
 }
-void Lexator::IsDigit()
-{
-	bool dot = false;
-	for (int i = 0; i < currentLexem.size(); i++)
-	{
-		if (isdigit(currentLexem[i]))
-			continue;
-		else 
-			if (currentLexem[i] == '.')
-			{
-				if (!dot)
-					dot = true;
-				else
-				{
-					ErrorFun("Повторное использование '.' ");
-					exit(1);
-				}
-					
-			}
-			else
-			{
-				ErrorFun("Число не может содержать буквы");
-				exit(1);
-			}
-	}
-	if (!dot)
-	{
-		TabLexem(constInt, "Целочисленная константа : "+currentLexem);
-	}
-	else
-	{
-		TabLexem(constFloat, "Константа с плавующей запятой : " + currentLexem);
-	}
-	
-}
-
 void Lexator::ErrorFun(string str)
 {
 	cout << lineNumber << " " << str << endl;
-	exit(1);
 }
-
+void Lexator::ErrorFun(string str,char lex)
+{
+	cout << lineNumber << " " << str <<lex<< endl;
+}
+/// <summary>
+/// Занесение информации в файл
+/// </summary>
 void Lexator::TabLexem( int number, string str)
 {
 	out << lineNumber << "\t" << number << "\t" << str<<endl;
 }
-
 void Lexator::CloseFile()
 {
 	in.close();
 	out.close();
 }
-int Lexator::OpenFile(string fileNameOpen, string fileNameSave)
+int Lexator::OpenFile()
 {
 	in.open(fileNameOpen);
 	out.open(fileNameSave);
@@ -309,8 +435,10 @@ int main(int argc, char* argv[])
 	cin >> nameIn;
 	cout << "Введите имя файла для Лексем" << endl;;
 	cin >> nameOut;
-
+	
 	Lexator lex("geka.txt", "Lexem.txt");
+	
+	
 
 }
 

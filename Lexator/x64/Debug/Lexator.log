@@ -1,2 +1,5 @@
-﻿  Lexator.cpp
+﻿  Buffer.cpp
+  Lexator.cpp
+  Создание кода...
+C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp(314): warning C4715: Lexator::CheckE6: значение возвращается не при всех путях выполнения
   Lexator.vcxproj -> C:\Users\User\source\repos\Lexator\x64\Debug\Lexator.exe
