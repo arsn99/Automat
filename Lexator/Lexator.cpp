@@ -170,6 +170,9 @@ bool Lexator::CheckOperatorE1()
 	case '+':
 		TabLexem(plus, " + ");
 		return 1;
+	case '-':
+		TabLexem(minus, " - ");
+		return 1;
 
 	case '>':
 		TabLexem(Bigger, " > ");
@@ -218,7 +221,8 @@ bool Lexator::CheckOperatorE1_2()
 
 	case '+':
 		return 1;
-
+	case '-':
+		return 1;
 	case '>':
 		return 1;
 
@@ -282,10 +286,32 @@ bool Lexator::CheckE1()
 		buffer.Add(currentLex);
 		currentState = Number;
 		return 1;
-
+		/**/
 	}
 	if (CheckOperatorE1())
 		return 1;
+	
+	if (currentLex == '/' && in.peek() == '/')
+	{
+		while (currentLex != '\n' && in.get(currentLex))
+			;
+		return 1;
+	}
+	if (currentLex == '/' && in.peek() == '*')
+	{
+		in.get(currentLex);
+		in.get(currentLex);
+	
+		while (	(	(currentLex != '*') || (in.peek() != '/')	)&&in.get(currentLex) )
+		{
+			cout << (currentLex != '*') << " " << (in.peek() != '/') << endl;
+			
+		}
+		cout << currentLex << " CHECK" << endl;
+		in.get(currentLex);
+		return 1;
+	}
+
 	return 0;
 }
 /// <summary>
@@ -361,7 +387,6 @@ void Lexator::StateMachine()
 	currentState = H;
 	while (in.get(currentLex))
 	{
-		cout <<"while " <<currentLex << endl;
 		switch (currentState)
 		{
 			case H:

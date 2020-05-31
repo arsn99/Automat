@@ -1,2 +1,5 @@
-while()
-geka = 4.2 +2+3.123 + 1+3;
+while() 
+/* dddd
+d
+*
+d*/ keka +1 //ddddddd
