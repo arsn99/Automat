@@ -202,8 +202,11 @@ bool Lexator::CheckOperatorE1()
 		TabLexem(equal, " = ");
 		return 1;
 	case '/':
-		TabLexem(divide, " / ");
-		return 1;
+		if (in.peek() != '/')
+		{
+			TabLexem(divide, " / ");
+			return 1;
+		}
 	default:
 		return false;
 		break;
@@ -247,6 +250,7 @@ bool Lexator::CheckOperatorE1_2()
 	case '=':
 		return 1;
 	case '/':
+		if(in.peek()!='/')
 		return 1;
 	default:
 		return false;
@@ -351,6 +355,7 @@ bool Lexator::CheckNumber()
 	
 	if (isalpha(currentLex))
 	{
+	
 		currentState = H;
 		return 0;
 	}
@@ -419,7 +424,7 @@ void Lexator::StateMachine()
 				break;
 			case Number:
 				if (!CheckNumber())
-					ErrorFun("Неправильный символ в состояние Number :  ", currentLex);
+					ErrorFun(string("Неправильный символ в состояние Number : ")+ buffer.ReturnBuffer(), currentLex);
 				break;
 				
 			default:
