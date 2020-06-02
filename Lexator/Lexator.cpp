@@ -44,14 +44,6 @@ public:
 		Bigger,
 		Litter
 	};
-	enum errorID
-	{
-		openFile,
-		notOpenFile
-
-	};
-	
-
 	int lineNumber;
 	void CloseFile();
 	bool updateLine;
@@ -202,7 +194,7 @@ bool Lexator::CheckOperatorE1()
 		TabLexem(equal, " = ");
 		return 1;
 	case '/':
-		if (in.peek() != '/')
+		if (in.peek() != '/' && in.peek() != '*')
 		{
 			TabLexem(divide, " / ");
 			return 1;
@@ -250,7 +242,7 @@ bool Lexator::CheckOperatorE1_2()
 	case '=':
 		return 1;
 	case '/':
-		if(in.peek()!='/')
+		if(in.peek()!='/'&& in.peek() != '*')
 		return 1;
 	default:
 		return false;
@@ -294,7 +286,7 @@ bool Lexator::CheckE1()
 		buffer.Add(currentLex);
 		currentState = Number;
 		return 1;
-		/**/
+		
 	}
 	if (CheckOperatorE1())
 		return 1;
@@ -302,7 +294,8 @@ bool Lexator::CheckE1()
 	if (currentLex == '/' && in.peek() == '/')
 	{
 		while (currentLex != '\n' && in.get(currentLex))
-			;
+			if (currentLex == '\n')
+				UpdateLine();
 		return 1;
 	}
 	if (currentLex == '/' && in.peek() == '*')
@@ -310,12 +303,10 @@ bool Lexator::CheckE1()
 		in.get(currentLex);
 		in.get(currentLex);
 	
-		while (	(	(currentLex != '*') || (in.peek() != '/')	)&&in.get(currentLex) )
-		{
-			cout << (currentLex != '*') << " " << (in.peek() != '/') << endl;
-			
-		}
-		cout << currentLex << " CHECK" << endl;
+		while (((currentLex != '*') || (in.peek() != '/')) && in.get(currentLex))
+			if (currentLex == '\n')
+				UpdateLine();
+		
 		in.get(currentLex);
 		return 1;
 	}

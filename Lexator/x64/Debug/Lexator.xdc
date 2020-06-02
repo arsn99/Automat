@@ -30,27 +30,27 @@
 Вызываются функции, которые нужны в состоянии Н
 </summary>
 </member>
-<member name="M:Lexator.CheckE6" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="325">
+<member name="M:Lexator.CheckE6" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="324">
 <summary>
 Функция для проверки слова.
 </summary>
 </member>
-<member name="M:Lexator.CheckNumber" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="349">
+<member name="M:Lexator.CheckNumber" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="348">
 <summary>
 Проверяет является ли текущий символ числом, если да то заносит в буфер.
 </summary>
 </member>
-<member name="M:Lexator.StateMachine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="407">
+<member name="M:Lexator.StateMachine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="406">
 <summary>
 Переход по состояниям
 </summary>
 </member>
-<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="440">
+<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="439">
 <summary>
 Обновление номера строки
 </summary>
 </member>
-<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="455">
+<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="454">
 <summary>
 Занесение информации в файл
 </summary>
