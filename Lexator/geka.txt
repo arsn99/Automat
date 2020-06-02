@@ -1,5 +1,1 @@
-while() 
-/* dddd
-d
-*
-d*/ keka +1 //ddddddd
+num = -4.2 + 6h / 2;

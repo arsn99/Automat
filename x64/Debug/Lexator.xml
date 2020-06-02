@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        "Lexator"
+    </assembly>
+    <members>
+        <member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)">
+            <summary>
+Занесение информации в файл
+</summary>
+        </member>
+        <member name="M:Lexator.UpdateLine">
+            <summary>
+Обновление номера строки
+</summary>
+        </member>
+        <member name="M:Lexator.StateMachine">
+            <summary>
+Переход по состояниям
+</summary>
+        </member>
+        <member name="M:Lexator.CheckNumber">
+            <summary>
+Проверяет является ли текущий символ числом, если да то заносит в буфер.
+</summary>
+        </member>
+        <member name="M:Lexator.CheckE6">
+            <summary>
+Функция для проверки слова.
+</summary>
+        </member>
+        <member name="M:Lexator.CheckE1">
+            <summary>
+Вызываются функции, которые нужны в состоянии Н
+</summary>
+        </member>
+        <member name="M:Lexator.CheckReservedWords">
+            <summary>
+Проверяет является ли данное слово, которое содержится в буфере зарезервированым
+</summary>
+        </member>
+        <member name="M:Lexator.CheckOperatorE1_2">
+            <summary>
+Проверяет является ли данный символ табуляцией
+</summary>
+        </member>
+        <member name="M:Lexator.CheckOperatorE1">
+            <summary>
+Проверяет является ли данный символ оператором, если является то заносится в таблицу
+</summary>
+        </member>
+        <member name="M:Lexator.CheckTabulation">
+            <summary>
+Проверяет является ли данный символ табуляцией
+</summary>
+        </member>
+        <member name="M:Lexator.IsLetter">
+            <summary>
+Проверяет является ли данный символ буквой.
+</summary>
+        </member>
+    </members>
+</doc>

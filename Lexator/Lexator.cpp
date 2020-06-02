@@ -201,6 +201,9 @@ bool Lexator::CheckOperatorE1()
 	case '=':
 		TabLexem(equal, " = ");
 		return 1;
+	case '/':
+		TabLexem(divide, " / ");
+		return 1;
 	default:
 		return false;
 		break;
@@ -243,6 +246,8 @@ bool Lexator::CheckOperatorE1_2()
 
 	case '=':
 		return 1;
+	case '/':
+		return 1;
 	default:
 		return false;
 		break;
@@ -269,7 +274,6 @@ bool Lexator::CheckReservedWords()
 /// </summary>
 bool Lexator::CheckE1()
 {
-	cout << currentLex << endl;
 	if (CheckTabulation())
 		return 1;
 	
@@ -345,8 +349,14 @@ bool Lexator::CheckNumber()
 {
 	bool isFloat = false;
 	
+	if (isalpha(currentLex))
+	{
+		currentState = H;
+		return 0;
+	}
 	while (!CheckTabulation()&&!CheckOperatorE1_2())
 	{
+		
 		if (isdigit(currentLex))
 		{
 			buffer.Add(currentLex);
@@ -359,18 +369,28 @@ bool Lexator::CheckNumber()
 					buffer.Add(currentLex);
 				}
 				else
+				{
+					currentState = H;
 					return 0;
+				}
 			else
+			{
+				currentState = H;
 				return 0;
+			}
 
 		in.get(currentLex);
 
 	}
-
+	
 	if (isFloat)
+	{
 		TabLexem(typeFloat, " Числовая константа с плавающей запятой " + string(buffer.ReturnBuffer()));
+	}
 	else
+	{
 		TabLexem(typeInt, " Целочисленная константа " + string(buffer.ReturnBuffer()));
+	}
 
 	currentState = H;
 
