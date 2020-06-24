@@ -377,7 +377,7 @@ void Lexator::StateMachine()
 	currentState = H;
 	while (in.get(currentLex))
 	{
-		cout << currentState <<" "<<currentLex<< endl;
+		//cout << currentState <<" "<<currentLex<< endl;
 		switch (currentState)
 		{
 			case H:
@@ -391,11 +391,7 @@ void Lexator::StateMachine()
 					currentState = Int;
 					break;
 				}
-				if (isalpha(currentLex))
-				{
-					currentState = Id;
-					break;
-				}
+				
 				switch (currentLex)
 				{
 					case 'w':
@@ -408,14 +404,21 @@ void Lexator::StateMachine()
 						currentState = Divide;
 						break;
 					default:
+						if (isalpha(currentLex))
+						{
+							currentState = Id;
+						}
+						else
+							ErrorFun("Неправильный символ в состоянии Н", currentLex);
 						break;
 				}
+				
 				break;
 			case Divide:
 				if (currentLex == '/')
 					currentState = BCom;
 				else 
-					ErrorFun("Неправильный символ", currentLex);
+					ErrorFun("Неправильный символ в состоянии / ", currentLex);
 				break;
 
 			case BCom:
@@ -427,7 +430,7 @@ void Lexator::StateMachine()
 				if (isdigit(currentLex))
 					currentState = Int;
 				else
-					ErrorFun("Неправильный символ", currentLex);
+					ErrorFun("Неправильный символ в состоянии - ", currentLex);
 				break;
 			case Int:
 				if (isdigit(currentLex))
@@ -444,7 +447,7 @@ void Lexator::StateMachine()
 					currentState = Float;
 				}
 				else
-					ErrorFun("Неправильный символ", currentLex);
+					ErrorFun("Неправильный символ в состоянии Int", currentLex);
 
 				break;
 
@@ -458,7 +461,7 @@ void Lexator::StateMachine()
 					TabLexem(Id, "Число типа float");
 				}
 				else
-					ErrorFun("Неправильный символ", currentLex);
+					ErrorFun("Неправильный символ в состоянии float", currentLex);
 				break;
 
 			case Id:
@@ -470,7 +473,6 @@ void Lexator::StateMachine()
 				}
 				if (CheckOperatorE1_2())
 				{
-					cout << "check" << endl;
 					currentState = H;
 					string id = " Идентификатор & ";
 					id+=currentLex;
@@ -488,7 +490,10 @@ void Lexator::StateMachine()
 					if (isalpha(currentLex)||isdigit(currentLex))
 						currentState = Id;
 					else
-						ErrorFun("Неправильный символ", currentLex);
+					if(CheckTabulation())
+						TabLexem(Id, " Идентификатор");
+					else
+						ErrorFun("Неправильный символ в состоянии W", currentLex);
 				}
 				break;
 
@@ -500,7 +505,10 @@ void Lexator::StateMachine()
 					if (isalpha(currentLex) || isdigit(currentLex))
 						currentState = Id;
 					else
-						ErrorFun("Неправильный символ", currentLex);
+					if (CheckTabulation())
+						TabLexem(Id, " Идентификатор");
+					else
+						ErrorFun("Неправильный символ в состоянии WH", currentLex);
 				}
 				break;
 
@@ -512,7 +520,10 @@ void Lexator::StateMachine()
 					if (isalpha(currentLex) || isdigit(currentLex))
 						currentState = Id;
 					else
-						ErrorFun("Неправильный символ", currentLex);
+						if (CheckTabulation())
+							TabLexem(Id, " Идентификатор");
+					else
+						ErrorFun("Неправильный символ в состоянии WHI", currentLex);
 				}
 				break;
 
@@ -524,7 +535,10 @@ void Lexator::StateMachine()
 					if (isalpha(currentLex) || isdigit(currentLex))
 						currentState = Id;
 					else
-						ErrorFun("Неправильный символ", currentLex);
+						if (CheckTabulation())
+							TabLexem(Id, " Идентификатор");
+					else
+						ErrorFun("Неправильный символ в состоянии WHIL", currentLex);
 				}
 				break;
 
@@ -538,8 +552,9 @@ void Lexator::StateMachine()
 				else
 					if(isalpha(currentLex) || isdigit(currentLex))
 						currentState = Id;
+
 					else
-						ErrorFun("Неправильный символ", currentLex);
+						ErrorFun("Неправильный символ в состоянии WHILE", currentLex);
 				break;
 #pragma endregion				
 			default:

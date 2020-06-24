@@ -45,12 +45,12 @@
 Переход по состояниям
 </summary>
 </member>
-<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="555">
+<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="570">
 <summary>
 Обновление номера строки
 </summary>
 </member>
-<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="570">
+<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="585">
 <summary>
 Занесение информации в файл
 </summary>
