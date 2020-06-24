@@ -56,11 +56,19 @@ public:
 	{
 		H,
 		Id,
-		Word,
-		Number,
-		E5,
-		E6,
-		E7
+		W,
+		WH,
+		WHI,
+		WHIL,
+		WHILE,
+		SId,
+		SInt,
+		Minus,
+		Int,
+		Float,
+		Divide,
+		BCom,
+
 	};
 	State currentState;
 	char currentLex;
@@ -89,7 +97,7 @@ Lexator::Lexator( string fileNameOpen,  string fileNameSave)
 	this->fileNameOpen = fileNameOpen;
 	this->fileNameSave = fileNameSave;
 	updateLine = false;
-	if (OpenFile() == openFile)
+	if (OpenFile())
 	{
 		StateMachine();
 	}
@@ -193,12 +201,6 @@ bool Lexator::CheckOperatorE1()
 	case '=':
 		TabLexem(equal, " = ");
 		return 1;
-	case '/':
-		if (in.peek() != '/' && in.peek() != '*')
-		{
-			TabLexem(divide, " / ");
-			return 1;
-		}
 	default:
 		return false;
 		break;
@@ -277,40 +279,12 @@ bool Lexator::CheckE1()
 	{
 		buffer.ChangeCountForBuffer(0);
 		CheckWord();
-		currentState = Word;
+		//currentState = Word;
 		return 1;
-	}
-	if (isdigit(currentLex))
-	{
-		buffer.ChangeCountForBuffer(0);	
-		buffer.Add(currentLex);
-		currentState = Number;
-		return 1;
-		
 	}
 	if (CheckOperatorE1())
 		return 1;
 	
-	if (currentLex == '/' && in.peek() == '/')
-	{
-		while (currentLex != '\n' && in.get(currentLex))
-			if (currentLex == '\n')
-				UpdateLine();
-		return 1;
-	}
-	if (currentLex == '/' && in.peek() == '*')
-	{
-		in.get(currentLex);
-		in.get(currentLex);
-	
-		while (((currentLex != '*') || (in.peek() != '/')) && in.get(currentLex))
-			if (currentLex == '\n')
-				UpdateLine();
-		
-		in.get(currentLex);
-		return 1;
-	}
-
 	return 0;
 }
 /// <summary>
@@ -403,21 +377,171 @@ void Lexator::StateMachine()
 	currentState = H;
 	while (in.get(currentLex))
 	{
+		cout << currentState <<" "<<currentLex<< endl;
 		switch (currentState)
 		{
 			case H:
-				if (!CheckE1())
-					ErrorFun("Неправильный символ в состояние H: ", currentLex);
+				if (CheckTabulation())
+				{
+					currentState = H;
+					break;
+				}
+				if (isdigit(currentLex))
+				{
+					currentState = Int;
+					break;
+				}
+				if (isalpha(currentLex))
+				{
+					currentState = Id;
+					break;
+				}
+				switch (currentLex)
+				{
+					case 'w':
+						currentState = W;
+						break;
+					case '-':
+						currentState = Minus;
+						break;
+					case '/':
+						currentState = Divide;
+						break;
+					default:
+						break;
+				}
 				break;
-			case Word:
-				if(!CheckE6())
-					ErrorFun("Неправильный символ в состояние Word : ", currentLex);
+			case Divide:
+				if (currentLex == '/')
+					currentState = BCom;
+				else 
+					ErrorFun("Неправильный символ", currentLex);
 				break;
-			case Number:
-				if (!CheckNumber())
-					ErrorFun(string("Неправильный символ в состояние Number : ")+ buffer.ReturnBuffer(), currentLex);
+
+			case BCom:
+				if (currentLex == '\n')
+					currentState = H;
 				break;
-				
+
+			case Minus:
+				if (isdigit(currentLex))
+					currentState = Int;
+				else
+					ErrorFun("Неправильный символ", currentLex);
+				break;
+			case Int:
+				if (isdigit(currentLex))
+					currentState = Int;
+				else
+				if(CheckTabulation())
+				{
+					currentState = H;
+					TabLexem(Id, " Число типа int ");
+				}
+				else
+				if (currentLex == '.')
+				{
+					currentState = Float;
+				}
+				else
+					ErrorFun("Неправильный символ", currentLex);
+
+				break;
+
+			case Float:
+				if (isdigit(currentLex))
+					currentState = Float;
+				else
+				if (CheckTabulation())
+				{
+					currentState = H;
+					TabLexem(Id, "Число типа float");
+				}
+				else
+					ErrorFun("Неправильный символ", currentLex);
+				break;
+
+			case Id:
+				if (CheckTabulation())
+				{
+					TabLexem(Id, " Идентификатор");
+					currentState = H;
+					break;
+				}
+				if (CheckOperatorE1_2())
+				{
+					cout << "check" << endl;
+					currentState = H;
+					string id = " Идентификатор & ";
+					id+=currentLex;
+					TabLexem(Id, id);
+				}
+				if (isalpha(currentLex) || isdigit(currentLex))
+					currentState = Id;
+				break;
+#pragma region WHILE
+			case W:
+				if (currentLex == 'h')
+					currentState = WH;
+				else
+				{
+					if (isalpha(currentLex)||isdigit(currentLex))
+						currentState = Id;
+					else
+						ErrorFun("Неправильный символ", currentLex);
+				}
+				break;
+
+			case WH:
+				if (currentLex == 'i')
+					currentState = WHI;
+				else
+				{
+					if (isalpha(currentLex) || isdigit(currentLex))
+						currentState = Id;
+					else
+						ErrorFun("Неправильный символ", currentLex);
+				}
+				break;
+
+			case WHI:
+				if (currentLex == 'l')
+					currentState = WHIL;
+				else
+				{
+					if (isalpha(currentLex) || isdigit(currentLex))
+						currentState = Id;
+					else
+						ErrorFun("Неправильный символ", currentLex);
+				}
+				break;
+
+			case WHIL:
+				if (currentLex == 'e')
+					currentState = WHILE;
+				else
+				{
+					if (isalpha(currentLex) || isdigit(currentLex))
+						currentState = Id;
+					else
+						ErrorFun("Неправильный символ", currentLex);
+				}
+				break;
+
+			case WHILE:
+				if (CheckTabulation())
+				{
+					TabLexem(whileFn, "Служебное слово : while");
+					currentState = H;
+					break;
+				}
+				else
+					if(isalpha(currentLex) || isdigit(currentLex))
+						currentState = Id;
+					else
+						ErrorFun("Неправильный символ", currentLex);
+				break;
+#pragma endregion				
 			default:
 				break;
 		}
@@ -460,10 +584,10 @@ int Lexator::OpenFile()
 	in.open(fileNameOpen);
 	out.open(fileNameSave);
 	if (in.is_open() && out.is_open())
-		return openFile;
+		return 1;
 
 	else
-		return notOpenFile;
+		return 0;
 		
 
 }

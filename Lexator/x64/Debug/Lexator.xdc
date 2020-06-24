@@ -15,42 +15,42 @@
 Проверяет является ли данный символ оператором, если является то заносится в таблицу
 </summary>
 </member>
-<member name="M:Lexator.CheckOperatorE1_2" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="215">
+<member name="M:Lexator.CheckOperatorE1_2" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="209">
 <summary>
 Проверяет является ли данный символ табуляцией
 </summary>
 </member>
-<member name="M:Lexator.CheckReservedWords" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="260">
+<member name="M:Lexator.CheckReservedWords" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="254">
 <summary>
 Проверяет является ли данное слово, которое содержится в буфере зарезервированым
 </summary>
 </member>
-<member name="M:Lexator.CheckE1" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="276">
+<member name="M:Lexator.CheckE1" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="270">
 <summary>
 Вызываются функции, которые нужны в состоянии Н
 </summary>
 </member>
-<member name="M:Lexator.CheckE6" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="324">
+<member name="M:Lexator.CheckE6" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="290">
 <summary>
 Функция для проверки слова.
 </summary>
 </member>
-<member name="M:Lexator.CheckNumber" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="348">
+<member name="M:Lexator.CheckNumber" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="314">
 <summary>
 Проверяет является ли текущий символ числом, если да то заносит в буфер.
 </summary>
 </member>
-<member name="M:Lexator.StateMachine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="406">
+<member name="M:Lexator.StateMachine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="372">
 <summary>
 Переход по состояниям
 </summary>
 </member>
-<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="439">
+<member name="M:Lexator.UpdateLine" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="555">
 <summary>
 Обновление номера строки
 </summary>
 </member>
-<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="454">
+<member name="M:Lexator.TabLexem(System.Int32,std.basic_string&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte,std.char_traits{System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte},std.allocator&lt;System.SByte!System.Runtime.CompilerServices.IsSignUnspecifiedByte&gt;&gt;)" decl="false" source="C:\Users\User\source\repos\Lexator\Lexator\Lexator.cpp" line="570">
 <summary>
 Занесение информации в файл
 </summary>
